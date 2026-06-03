@@ -7,7 +7,7 @@ kind: Pod
 spec:
   containers:
   - name: docker
-    image: docker:24.0.7-cli
+    image: docker:latest
     command:
     - cat
     tty: true
