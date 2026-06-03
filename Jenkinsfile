@@ -26,11 +26,11 @@ pipeline {
         stage('3. Build & Push Docker Image') {
             steps {
                 echo "Building Docker Image: ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
-                // sh "docker build -t ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} ."
-                // withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
-                //     sh "echo $PASS | docker login -u $USER --password-stdin"
-                //     sh "docker push ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
-                // }
+                sh "docker build -t ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} ."
+                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                    sh "echo \$PASS | docker login -u \$USER --password-stdin"
+                    sh "docker push ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
+                }
             }
         }
 
@@ -43,19 +43,19 @@ pipeline {
         stage('4. Update Git for GitOps (ArgoCD Pull)') {
             steps {
                 echo 'Updating image tag in Helm values.yaml...'
-                // Install/use 'yq' tool to edit YAML in place
-                // sh "yq e '.image.tag = \"${IMAGE_TAG}\"' -i hello-kubernetes/values.yaml"
+                // Use sed to update the tag value in place robustly
+                sh "sed -i 's/tag: .*/tag: \"${IMAGE_TAG}\"/g' hello-kubernetes/values.yaml"
                 
                 // Commit and push back to Git
-                // withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: 'GH_USER', passwordVariable: 'GH_TOKEN')]) {
-                //     sh """
-                //         git config user.email "jenkins@yourdomain.com"
-                //         git config user.name "Jenkins CI"
-                //         git add hello-kubernetes/values.yaml
-                //         git commit -m "image update: bump hello-gitops-app tag to ${IMAGE_TAG} [skip ci]"
-                //         git push https://${GH_USER}:${GH_TOKEN}@${GITOPS_REPO} main
-                //     """
-                // }
+                withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: 'GH_USER', passwordVariable: 'GH_TOKEN')]) {
+                    sh """
+                        git config user.email "jenkins@yourdomain.com"
+                        git config user.name "Jenkins CI"
+                        git add hello-kubernetes/values.yaml
+                        git commit -m "image update: bump hello-gitops-app tag to ${IMAGE_TAG} [skip ci]"
+                        git push https://${GH_USER}:${GH_TOKEN}@${GITOPS_REPO} main
+                    """
+                }
             }
         }
 
