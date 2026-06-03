@@ -31,18 +31,18 @@ spec:
             httpGet:
               path: /
               port: 8080
-            initialDelaySeconds: 5
+            initialDelaySeconds: 20
             periodSeconds: 10
           readinessProbe:
             httpGet:
               path: /
               port: 8080
-            initialDelaySeconds: 5
+            initialDelaySeconds: 20
             periodSeconds: 10
           resources:
             limits:
+              cpu: 500m
+              memory: 256Mi
+            requests:
               cpu: 100m
               memory: 128Mi
-            requests:
-              cpu: 50m
-              memory: 64Mi
