@@ -76,7 +76,7 @@ spec:
                         git config user.name "Jenkins CI"
                         git add hello-kubernetes/values.yaml
                         git commit -m "image update: bump hello-gitops-app tag to ${IMAGE_TAG} [skip ci]"
-                        git push https://${GH_USER}:${GH_TOKEN}@${GITOPS_REPO} main
+                        git push https://${GH_USER}:${GH_TOKEN}@${GITOPS_REPO} HEAD:main
                     """
                 }
             }
