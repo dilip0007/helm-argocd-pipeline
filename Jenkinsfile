@@ -4,7 +4,7 @@ pipeline {
     environment {
         // Define repository and image variables
         REGISTRY = "docker.io/dilip0007"
-        IMAGE_NAME = "hello-kubernetes"
+        IMAGE_NAME = "hello-gitops-app"
         IMAGE_TAG = "${BUILD_NUMBER}" // Use build number as the image tag
         GITOPS_REPO = "github.com/dilip0007/helm-argocd-pipeline.git"
     }
@@ -52,7 +52,7 @@ pipeline {
                 //         git config user.email "jenkins@yourdomain.com"
                 //         git config user.name "Jenkins CI"
                 //         git add hello-kubernetes/values.yaml
-                //         git commit -m "image update: bump hello-kubernetes tag to ${IMAGE_TAG} [skip ci]"
+                //         git commit -m "image update: bump hello-gitops-app tag to ${IMAGE_TAG} [skip ci]"
                 //         git push https://${GH_USER}:${GH_TOKEN}@${GITOPS_REPO} main
                 //     """
                 // }

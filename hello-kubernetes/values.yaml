@@ -5,10 +5,10 @@
 replicaCount: 2
 
 image:
-  repository: paulbouwer/hello-kubernetes
+  repository: dilip0007/hello-gitops-app
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "1.10"
+  tag: "latest"
 
 service:
   type: ClusterIP
