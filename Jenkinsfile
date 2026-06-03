@@ -22,6 +22,10 @@ spec:
         }
     }
 
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '2'))
+    }
+
     environment {
         // Define repository and image variables
         REGISTRY = "docker.io/dilipnigam007"
