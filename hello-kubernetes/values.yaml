@@ -1,0 +1,31 @@
+# Default values for hello-kubernetes.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 2
+
+image:
+  repository: paulbouwer/hello-kubernetes
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "1.10"
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+
+# Custom configuration variables that hello-kubernetes app accepts as environment variables
+config:
+  message: "Welcome to your Helm + ArgoCD GitOps Pipeline!"
+  uiColor: "#3498db" # Vibrant blue

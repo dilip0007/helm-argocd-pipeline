@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hello-kubernetes-gitops
+  namespace: argocd
+spec:
+  project: default
+  source:
+    # When you push this to your own GitHub, replace this URL with your GitHub repo URL
+    repoURL: 'https://github.com/dilip0007/helm-argocd-pipeline.git'
+    targetRevision: HEAD
+    path: hello-kubernetes
+    helm:
+      valueFiles:
+        - values.yaml
+      parameters:
+        - name: config.message
+          value: "Hello GitOps from ArgoCD and Helm!"
+        - name: config.uiColor
+          value: "#2ecc71" # Change color to dynamic green via ArgoCD config override
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: hello-kubernetes-ns
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    createNamespace: true
