@@ -27,5 +27,6 @@ ingress:
 
 # Custom configuration variables that hello-kubernetes app accepts as environment variables
 config:
-  message: "Welcome to your Helm + ArgoCD GitOps Pipeline!"
-  uiColor: "#3498db" # Vibrant blue
+  message: "Hello from Dilip, Akanksha, and Advik! ❤️"
+  uiColor: "#e74c3c" # Warm red
+

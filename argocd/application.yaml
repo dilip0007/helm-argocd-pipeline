@@ -15,9 +15,9 @@ spec:
         - values.yaml
       parameters:
         - name: config.message
-          value: "Hello GitOps from ArgoCD and Helm!"
+          value: "Hello from Dilip, Akanksha, and Advik! ❤️"
         - name: config.uiColor
-          value: "#2ecc71" # Change color to dynamic green via ArgoCD config override
+          value: "#e74c3c" # A warm red color to match the heart!
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: hello-kubernetes-ns
