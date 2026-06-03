@@ -24,7 +24,7 @@ spec:
 
     environment {
         // Define repository and image variables
-        REGISTRY = "docker.io/dilip0007"
+        REGISTRY = "docker.io/dilipnigam007"
         IMAGE_NAME = "hello-gitops-app"
         IMAGE_TAG = "${BUILD_NUMBER}" // Use build number as the image tag
         GITOPS_REPO = "github.com/dilip0007/helm-argocd-pipeline.git"

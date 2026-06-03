@@ -5,7 +5,7 @@
 replicaCount: 2
 
 image:
-  repository: dilip0007/hello-gitops-app
+  repository: dilipnigam007/hello-gitops-app
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
