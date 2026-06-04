@@ -79,6 +79,15 @@ spec:
                         git push https://${GH_USER}:${GH_TOKEN}@${GITOPS_REPO} HEAD:main
                     """
                 }
+
+                // Notify ArgoCD locally to refresh and sync immediately
+                echo 'Triggering ArgoCD webhook sync locally...'
+                sh """
+                    curl -k -X POST -H "X-GitHub-Event: push" \
+                      -H "Content-Type: application/json" \
+                      -d '{"repository":{"html_url":"https://github.com/dilip0007/helm-argocd-pipeline"}}' \
+                      http://argocd-server.argocd.svc.cluster.local/api/v1/webhooks/github
+                """
             }
         }
     }
