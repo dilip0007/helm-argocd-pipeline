@@ -2,9 +2,10 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 8080;
 
-// Read config environment variables (with fallbacks)
-const message = process.env.MESSAGE || "Hello from Dilip, Akanksha, and Advik! ❤️";
-const uiColor = process.env.UI_COLOR || "#e74c3c"; 
+// Static configuration defined directly in application code
+const message = "Hello from Dilip, Akanksha, and Advik! ❤️";
+const uiColor = "#e74c3c"; 
+
 
 app.get('/', (req, res) => {
     res.send(`

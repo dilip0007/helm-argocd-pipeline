@@ -13,11 +13,6 @@ spec:
     helm:
       valueFiles:
         - values.yaml
-      parameters:
-        - name: config.message
-          value: "Hello from Dilip, Akanksha, and Advik! ❤️"
-        - name: config.uiColor
-          value: "#e74c3c" # A warm red color to match the heart!
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: hello-kubernetes-ns

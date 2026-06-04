@@ -26,8 +26,3 @@ ingress:
           pathType: ImplementationSpecific
   tls: []
 
-# Custom configuration variables that hello-kubernetes app accepts as environment variables
-config:
-  message: "Hello from Dilip, Akanksha, and Advik! ❤️"
-  uiColor: "#e74c3c" # Warm red
-

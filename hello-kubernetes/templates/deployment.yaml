@@ -22,11 +22,7 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
-          env:
-            - name: MESSAGE
-              value: {{ .Values.config.message | quote }}
-            - name: UI_COLOR
-              value: {{ .Values.config.uiColor | quote }}
+
           livenessProbe:
             httpGet:
               path: /
