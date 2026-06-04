@@ -61,9 +61,10 @@ spec:
             }
         }
 
-        // OPTION A: GitOps CI/CD Pipeline (Recommended when using ArgoCD)
-        // Jenkins updates the Helm values.yaml tag in Git, and ArgoCD automatically deploys it.
         stage('4. Update Git for GitOps (ArgoCD Pull)') {
+            when {
+                branch 'main'
+            }
             steps {
                 echo 'Updating image tag in Helm values.yaml...'
                 // Run in default container since it has sed and git pre-installed
