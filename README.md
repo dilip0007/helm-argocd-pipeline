@@ -140,3 +140,42 @@ Let's change the color of our web page directly by editing our Helm values in Gi
 3. Commit the change directly to the `main` branch.
 4. Go to your ArgoCD dashboard. You will see that ArgoCD detects the change (usually within 3 minutes, or you can click the **Sync** or **Refresh** button on the dashboard to trigger it immediately).
 5. Watch ArgoCD perform a rolling update of your pods automatically!
+
+---
+
+## 📋 Local Cluster Restart & Port Cheat Sheet
+
+Use these commands whenever you restart your Mac or restart Minikube to keep your browser bookmarks working on the exact same ports:
+
+### 1. Start the Cluster
+```bash
+minikube start --cpus=4 --memory=6144 --driver=docker
+```
+
+### 2. Expose the Dashboards (Open in separate terminal tabs)
+
+* **ArgoCD Dashboard** ➔ Opens at **[https://localhost:8080](https://localhost:8080)**:
+  ```bash
+  kubectl port-forward svc/argocd-server -n argocd 8080:443
+  ```
+  
+* **Jenkins Dashboard** ➔ Opens at **[http://localhost:8082](http://localhost:8082)**:
+  ```bash
+  kubectl port-forward svc/jenkins -n jenkins 8082:8080
+  ```
+
+### 3. Expose Your Custom Web App
+Since our web app is configured to use a **static NodePort (32000)**, you can access it directly without port forwarding!
+
+1. Fetch your Minikube IP:
+   ```bash
+   minikube ip
+   ```
+2. Open your bookmark to:
+   👉 **`http://<minikube-ip>:32000`** (e.g. `http://192.168.49.2:32000`)
+
+*(If you still prefer using a localhost address at port `8081`, run this port-forward command instead)*:
+```bash
+kubectl port-forward svc/hello-kubernetes-gitops -n hello-kubernetes-ns 8081:8080
+```
+
