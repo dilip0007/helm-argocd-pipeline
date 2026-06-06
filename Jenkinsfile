@@ -42,9 +42,6 @@ pipeline {
         }
 
         stage('4. Update Git for GitOps (ArgoCD Pull)') {
-            when {
-                branch 'main'
-            }
             steps {
                 echo 'Updating image tag in Helm values.yaml...'
                 sh "perl -i -pe 's/tag: .*/tag: \"${IMAGE_TAG}\"/g' hello-kubernetes/values.yaml"
