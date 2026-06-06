@@ -7,6 +7,9 @@ pipeline {
     }
 
     environment {
+        // Define execution PATH for macOS binaries (Docker, perl, git)
+        PATH = "/usr/local/bin:/opt/homebrew/bin:${env.PATH}"
+
         // Define repository and image variables
         REGISTRY = "docker.io/dilipnigam007"
         IMAGE_NAME = "hello-gitops-app"
