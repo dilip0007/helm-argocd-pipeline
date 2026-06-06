@@ -9,7 +9,7 @@ app.get('/', (req, res) => {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dilip Nigam, Akanksha, and Advik Nigam ❤️ GitOps</title>
+    <title>Dilip Kumar Nigam, Akanksha, and Advik Nigam ❤️ GitOps</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -277,7 +277,7 @@ app.get('/', (req, res) => {
             </div>
             
             <h1>For the most beautiful family...</h1>
-            <div class="message">Dilip + Akanksha + Advik Nigam</div>
+            <div class="message">Dilip Kumar + Akanksha + Advik Nigam</div>
             
             <!-- Love message rotating ticker -->
             <div class="ticker-container">
@@ -298,7 +298,7 @@ app.get('/', (req, res) => {
         </div>
 
         <footer>
-            DILIP &bull; AKANKSHA &bull; ADVIK NIGAM
+            DILIP KUMAR &bull; AKANKSHA &bull; ADVIK NIGAM
         </footer>
     </div>
 
