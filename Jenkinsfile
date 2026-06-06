@@ -61,13 +61,8 @@ pipeline {
                 }
 
                 // Notify ArgoCD locally to refresh and sync immediately
-                echo 'Triggering ArgoCD webhook sync locally...'
-                sh """
-                    curl -k -X POST -H "X-GitHub-Event: push" \
-                      -H "Content-Type: application/json" \
-                      -d '{"repository":{"html_url":"https://github.com/dilip0007/helm-argocd-pipeline"}}' \
-                      https://localhost:8080/api/v1/webhooks/github
-                """
+                echo 'Triggering ArgoCD sync directly via kubectl...'
+                sh "kubectl patch app hello-kubernetes-gitops -n argocd --type merge -p '{\"operation\":{\"sync\":{\"prune\":true}}}'"
             }
         }
     }
