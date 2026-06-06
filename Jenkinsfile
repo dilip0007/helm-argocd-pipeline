@@ -1,33 +1,5 @@
 pipeline {
-    agent {
-        kubernetes {
-            yaml '''
-apiVersion: v1
-kind: Pod
-spec:
-  containers:
-  - name: docker
-    image: docker:latest
-    command:
-    - cat
-    tty: true
-    resources:
-      requests:
-        cpu: "100m"
-        memory: "256Mi"
-      limits:
-        cpu: "500m"
-        memory: "512Mi"
-    volumeMounts:
-    - mountPath: /var/run/docker.sock
-      name: docker-sock
-  volumes:
-  - name: docker-sock
-    hostPath:
-      path: /var/run/docker.sock
-'''
-        }
-    }
+    agent any
 
     options {
         buildDiscarder(logRotator(numToKeepStr: '2'))
@@ -57,14 +29,11 @@ spec:
 
         stage('3. Build & Push Docker Image') {
             steps {
-                // Execute this stage inside the 'docker' container defined in the pod template above
-                container('docker') {
-                    echo "Building Docker Image: ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
-                    sh "docker build -t ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} ."
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
-                        sh "echo \$PASS | docker login -u \$USER --password-stdin"
-                        sh "docker push ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
-                    }
+                echo "Building Docker Image: ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
+                sh "docker build -t ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} ."
+                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                    sh "echo \$PASS | docker login -u \$USER --password-stdin"
+                    sh "docker push ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
                 }
             }
         }
@@ -75,8 +44,7 @@ spec:
             }
             steps {
                 echo 'Updating image tag in Helm values.yaml...'
-                // Run in default container since it has sed and git pre-installed
-                sh "sed -i 's/tag: .*/tag: \"${IMAGE_TAG}\"/g' hello-kubernetes/values.yaml"
+                sh "perl -i -pe 's/tag: .*/tag: \"${IMAGE_TAG}\"/g' hello-kubernetes/values.yaml"
                 
                 // Commit and push back to Git
                 withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: 'GH_USER', passwordVariable: 'GH_TOKEN')]) {
@@ -95,7 +63,7 @@ spec:
                     curl -k -X POST -H "X-GitHub-Event: push" \
                       -H "Content-Type: application/json" \
                       -d '{"repository":{"html_url":"https://github.com/dilip0007/helm-argocd-pipeline"}}' \
-                      http://argocd-server.argocd.svc.cluster.local/api/v1/webhooks/github
+                      https://localhost:8080/api/v1/webhooks/github
                 """
             }
         }

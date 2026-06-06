@@ -5,14 +5,7 @@
 TUNNELS=(
   "8080:argocd:svc/argocd-server:443"
   "8081:hello-kubernetes-ns:svc/hello-kubernetes-gitops:8080"
-  "8082:jenkins:svc/jenkins:8080"
 )
-
-# Check and stop conflicting Homebrew Jenkins service if it is running
-if brew services list 2>/dev/null | grep -q "jenkins-lts.*started"; then
-  echo "[INIT] ⚠️ Found conflicting Homebrew Jenkins service running. Stopping it..."
-  brew services stop jenkins-lts >/dev/null 2>&1
-fi
 
 echo "Starting Port-Forward Keeper..."
 echo "Logs are written to /tmp/pf-<port>.log"
