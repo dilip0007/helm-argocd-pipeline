@@ -75,6 +75,8 @@ pipeline {
         always {
             echo 'Cleaning up workspace...'
             cleanWs()
+            echo 'Cleaning up local Docker image...'
+            sh "docker rmi ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} -f || true"
             echo 'Cleaning up Docker build cache and dangling images...'
             sh 'docker builder prune -f'
             sh 'docker image prune -f'
