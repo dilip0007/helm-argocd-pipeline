@@ -41,7 +41,7 @@ pipeline {
             }
         }
 
-        stage('4. Update Git for GitOps (ArgoCD Pull)') {
+        stage('4. Update Image Tag in GitOps Config') {
             when {
                 branch 'main'
             }
@@ -72,10 +72,9 @@ pipeline {
                         git push origin main
                     """
                 }
-
-                // Notify ArgoCD locally to refresh and sync immediately
-                echo 'Triggering ArgoCD sync directly via kubectl...'
-                sh "kubectl patch app hello-kubernetes-gitops -n argocd --type merge -p '{\"operation\":{\"sync\":{\"prune\":true}}}'"
+                // Tag updated — CD pipeline (watching helm-gitops-config) will
+                // detect this commit and handle ArgoCD sync + verification.
+                echo "✅ Tag ${IMAGE_TAG} pushed to helm-gitops-config. CD pipeline will take it from here."
             }
         }
     }
