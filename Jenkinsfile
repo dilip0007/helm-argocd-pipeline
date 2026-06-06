@@ -11,6 +11,13 @@ spec:
     command:
     - cat
     tty: true
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "256Mi"
+      limits:
+        cpu: "500m"
+        memory: "512Mi"
     volumeMounts:
     - mountPath: /var/run/docker.sock
       name: docker-sock
@@ -24,6 +31,7 @@ spec:
 
     options {
         buildDiscarder(logRotator(numToKeepStr: '2'))
+        disableConcurrentBuilds()
     }
 
     environment {
