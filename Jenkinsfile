@@ -14,7 +14,7 @@ pipeline {
         REGISTRY = "docker.io/dilipnigam007"
         IMAGE_NAME = "hello-gitops-app"
         IMAGE_TAG = "${BUILD_NUMBER}" // Use build number as the image tag
-        GITOPS_REPO = "github.com/dilip0007/helm-argocd-pipeline.git"
+        GITOPS_REPO = "github.com/dilip0007/helm-gitops-config.git"
     }
 
     stages {
@@ -46,17 +46,30 @@ pipeline {
                 branch 'main'
             }
             steps {
-                echo 'Updating image tag in Helm values.yaml...'
-                sh "perl -i -pe 's/tag: .*/tag: \"${IMAGE_TAG}\"/g' hello-kubernetes/values.yaml"
+                echo 'Updating image tag in Helm values.yaml in config repository...'
                 
-                // Commit and push back to Git
+                // Clone the config repository, update values.yaml, and push back
                 withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: 'GH_USER', passwordVariable: 'GH_TOKEN')]) {
                     sh """
+                        # Remove any existing config-repo folder
+                        rm -rf config-repo
+                        
+                        # Clone the config repo
+                        git clone https://${GH_USER}:${GH_TOKEN}@${GITOPS_REPO} config-repo
+                        
+                        cd config-repo
+                        
+                        # Update the image tag in values.yaml
+                        perl -i -pe 's/tag: .*/tag: "${IMAGE_TAG}"/g' hello-kubernetes/values.yaml
+                        
+                        # Configure git client
                         git config user.email "jenkins@yourdomain.com"
                         git config user.name "Jenkins CI"
+                        
+                        # Stage, commit and push changes back
                         git add hello-kubernetes/values.yaml
                         git commit -m "image update: bump hello-gitops-app tag to ${IMAGE_TAG} [skip ci]"
-                        git push https://${GH_USER}:${GH_TOKEN}@${GITOPS_REPO} HEAD:main
+                        git push origin main
                     """
                 }
 
