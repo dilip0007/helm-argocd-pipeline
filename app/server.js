@@ -277,7 +277,7 @@ app.get('/', (req, res) => {
             </div>
             
             <h1>For the most beautiful family...</h1>
-            <div class="message">Dilip + Akanksha + Advik</div>
+            <div class="message">Dilip + Akanksha + Advik Nigam</div>
             
             <!-- Love message rotating ticker -->
             <div class="ticker-container">
@@ -298,7 +298,7 @@ app.get('/', (req, res) => {
         </div>
 
         <footer>
-            DILIP &bull; AKANKSHA &bull; ADVIK
+            DILIP &bull; AKANKSHA &bull; ADVIK NIGAM
         </footer>
     </div>
 
