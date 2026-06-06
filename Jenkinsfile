@@ -68,4 +68,13 @@ pipeline {
             }
         }
     }
+    post {
+        always {
+            echo 'Cleaning up workspace...'
+            cleanWs()
+            echo 'Cleaning up Docker build cache and dangling images...'
+            sh 'docker builder prune -f'
+            sh 'docker image prune -f'
+        }
+    }
 }
