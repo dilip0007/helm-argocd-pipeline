@@ -5,6 +5,9 @@
 TUNNELS=(
   "8080:argocd:svc/argocd-server:443"
   "8081:hello-kubernetes-ns:svc/api-gateway:3000"
+  "3001:hello-kubernetes-ns:svc/family-service:3001"
+  "3002:hello-kubernetes-ns:svc/messages-service:3002"
+  "3003:hello-kubernetes-ns:svc/events-service:3003"
 )
 
 echo "Starting Port-Forward Keeper..."
