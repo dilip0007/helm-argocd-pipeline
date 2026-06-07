@@ -33,7 +33,7 @@ pipeline {
         stage('3. Build & Push Docker Image') {
             steps {
                 echo "Building Docker Image: ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
-                sh "docker build -t ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} ."
+                sh "docker build --no-cache -t ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} ."
                 withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
                     sh "echo \$PASS | docker login -u \$USER --password-stdin"
                     sh "docker push ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
