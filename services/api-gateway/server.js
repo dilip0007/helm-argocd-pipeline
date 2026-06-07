@@ -1,12 +1,12 @@
 const express = require('express');
-const fetch   = require('node-fetch');
-const app     = express();
-const port    = process.env.PORT || 3000;
+const fetch = require('node-fetch');
+const app = express();
+const port = process.env.PORT || 3000;
 
 // ── Backend service URLs (set via env vars in Kubernetes) ───────────────────
-const FAMILY_URL   = process.env.FAMILY_SERVICE_URL   || 'http://family-service:3001';
+const FAMILY_URL = process.env.FAMILY_SERVICE_URL || 'http://family-service:3001';
 const MESSAGES_URL = process.env.MESSAGES_SERVICE_URL || 'http://messages-service:3002';
-const EVENTS_URL   = process.env.EVENTS_SERVICE_URL   || 'http://events-service:3003';
+const EVENTS_URL = process.env.EVENTS_SERVICE_URL || 'http://events-service:3003';
 
 // ── Helper: safe fetch (returns null on error) ──────────────────────────────
 async function safeFetch(url) {
@@ -19,9 +19,9 @@ async function safeFetch(url) {
 }
 
 // ── API proxy routes (useful for learning / debugging) ──────────────────────
-app.get('/api/family',   async (req, res) => res.json(await safeFetch(`${FAMILY_URL}/api/members`)   || { error: 'family-service unavailable' }));
+app.get('/api/family', async (req, res) => res.json(await safeFetch(`${FAMILY_URL}/api/members`) || { error: 'family-service unavailable' }));
 app.get('/api/messages', async (req, res) => res.json(await safeFetch(`${MESSAGES_URL}/api/messages/all`) || { error: 'messages-service unavailable' }));
-app.get('/api/events',   async (req, res) => res.json(await safeFetch(`${EVENTS_URL}/api/events`)   || { error: 'events-service unavailable' }));
+app.get('/api/events', async (req, res) => res.json(await safeFetch(`${EVENTS_URL}/api/events`) || { error: 'events-service unavailable' }));
 
 app.get('/api/health', async (req, res) => {
   const [family, messages, events] = await Promise.all([
@@ -32,9 +32,9 @@ app.get('/api/health', async (req, res) => {
   res.json({
     gateway: { status: 'UP', service: 'api-gateway' },
     services: {
-      'family-service':   family   || { status: 'DOWN' },
+      'family-service': family || { status: 'DOWN' },
       'messages-service': messages || { status: 'DOWN' },
-      'events-service':   events   || { status: 'DOWN' }
+      'events-service': events || { status: 'DOWN' }
     }
   });
 });
@@ -48,9 +48,9 @@ app.get('/', async (req, res) => {
     safeFetch(`${EVENTS_URL}/api/events`)
   ]);
 
-  const members  = familyData?.members   || [];
+  const members = familyData?.members || [];
   const messages = messagesData?.messages || [];
-  const events   = eventsData?.events    || [];
+  const events = eventsData?.events || [];
   const randomMsg = messages.length ? messages[Math.floor(Math.random() * messages.length)] : { text: '❤️ Love is always running', emoji: '❤️' };
 
   const memberCards = members.map(m => `
@@ -352,7 +352,7 @@ app.get('/', async (req, res) => {
   </div>
 
   <footer>
-    DILIP KUMAR NIGAM &bull; AKANKSHA NIGAM &bull; ADVIK NIGAM<br>
+    DILIP  &bull; AKANKSHA NIGAM &bull; ADVIK NIGAM<br>
     <strong>4 Microservices · Kubernetes · ArgoCD · Jenkins CI/CD · Built with ❤️</strong>
   </footer>
 
