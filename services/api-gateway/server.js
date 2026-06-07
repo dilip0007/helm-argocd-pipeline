@@ -285,11 +285,11 @@ app.get('/', async (req, res) => {
     <span style="color:var(--muted)">Architecture:</span>
     <span class="arch-svc gateway">🌐 api-gateway :3000</span>
     <span class="arch-arrow">→</span>
-    <span class="arch-svc family">👨‍👩‍👦 family-service :3001</span>
+    <a href="/api/family" target="_blank" class="arch-svc family" style="text-decoration:none; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.transform='translateY(-2px)';" onmouseout="this.style.transform='none';">👨‍👩‍👦 family-service :3001</a>
     <span class="arch-arrow">+</span>
-    <span class="arch-svc msgs">💌 messages-service :3002</span>
+    <a href="/api/messages" target="_blank" class="arch-svc msgs" style="text-decoration:none; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.transform='translateY(-2px)';" onmouseout="this.style.transform='none';">💌 messages-service :3002</a>
     <span class="arch-arrow">+</span>
-    <span class="arch-svc events">📅 events-service :3003</span>
+    <a href="/api/events" target="_blank" class="arch-svc events" style="text-decoration:none; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.transform='translateY(-2px)';" onmouseout="this.style.transform='none';">📅 events-service :3003</a>
   </div>
 
   <div class="container">
