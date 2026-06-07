@@ -4,7 +4,7 @@
 # Format: LOCAL_PORT:NAMESPACE:SERVICE_NAME:TARGET_PORT
 TUNNELS=(
   "8080:argocd:svc/argocd-server:443"
-  "8081:hello-kubernetes-ns:svc/hello-kubernetes-gitops:8080"
+  "8081:hello-kubernetes-ns:svc/api-gateway:3000"
 )
 
 echo "Starting Port-Forward Keeper..."
