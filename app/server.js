@@ -419,7 +419,7 @@ app.get('/', (req, res) => {
 
         // --- Message Ticker Rotation ---
         let currentMsgIndex = 0;
-        const msgCount = 5;
+        const msgCount = 15;
 
         setInterval(() => {
             const oldMsg = document.getElementById('msg-' + currentMsgIndex);
