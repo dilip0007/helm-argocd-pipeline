@@ -286,6 +286,16 @@ app.get('/', (req, res) => {
                 <div class="ticker-message" id="msg-2">Akanksha's love is our foundation 🌸</div>
                 <div class="ticker-message" id="msg-3">Dilip's vision leads our way 🚀</div>
                 <div class="ticker-message" id="msg-4">A GitOps Pipeline built with true love ❤️</div>
+                <div class="ticker-message" id="msg-5">You are the master node of my heart, Akanksha ☸️</div>
+                <div class="ticker-message" id="msg-6">Advik is the most beautiful deployment we've ever made 🌟</div>
+                <div class="ticker-message" id="msg-7">Scaling our happiness together, infinitely 📈</div>
+                <div class="ticker-message" id="msg-8">My love for Akanksha comes with a 100% uptime guarantee ⏱️</div>
+                <div class="ticker-message" id="msg-9">Dilip, Akanksha & Advik: A perfectly orchestrated cluster 👨‍👩‍👦</div>
+                <div class="ticker-message" id="msg-10">Provisioning a lifetime of joy together 🌍</div>
+                <div class="ticker-message" id="msg-11">Advik’s smile instantly resolves all my error codes ✨</div>
+                <div class="ticker-message" id="msg-12">Every heartbeat is a successful ping to your soul 💓</div>
+                <div class="ticker-message" id="msg-13">Continuous Integration of love, joy, and family 🔄</div>
+                <div class="ticker-message" id="msg-14">Our family state is safely stored in the backend of my heart 🔒</div>
             </div>
             
             <div class="pipeline-flow">
