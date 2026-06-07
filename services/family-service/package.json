@@ -1,0 +1,8 @@
+{
+  "name": "family-service",
+  "version": "1.0.0",
+  "description": "Nigam Family member profiles microservice",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "dependencies": { "express": "^4.18.2" }
+}
