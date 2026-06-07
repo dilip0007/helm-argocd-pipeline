@@ -276,7 +276,7 @@ app.get('/', async (req, res) => {
   <div class="hero">
     <span class="hero-emoji">💖</span>
     <h1>The Nigam Family</h1>
-    <p class="hero-subtitle">Dilip Kumar · Akanksha · Advik</p>
+    <p class="hero-subtitle">Dilip · Akanksha · Advik</p>
     <div class="hero-tagline">Microservices App — Built with Love & Kubernetes</div>
   </div>
 

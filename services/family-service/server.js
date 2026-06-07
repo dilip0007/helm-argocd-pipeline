@@ -6,7 +6,7 @@ const port = process.env.PORT || 3001;
 const members = [
   {
     id: 'dilip',
-    name: 'Dilip Kumar Nigam',
+    name: 'Dilip Nigam',
     role: 'Dad · DevOps & Cloud Engineer',
     emoji: '👨‍💻',
     avatar: '🧑‍💼',
