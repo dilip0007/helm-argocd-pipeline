@@ -21,16 +21,35 @@ pipeline {
         stage('1. Checkout Code') {
             steps {
                 checkout scm
+                script {
+                    // Detect if this is an empty commit (no real file changes).
+                    // git diff-tree returns nothing when no files were touched.
+                    def changedFiles = sh(
+                        script: 'git diff-tree --no-commit-id -r HEAD --name-only',
+                        returnStdout: true
+                    ).trim()
+
+                    if (changedFiles) {
+                        env.HAS_CHANGES = 'true'
+                        echo "✅ Real code changes detected — will build and push image."
+                        echo "Changed files:\n${changedFiles}"
+                    } else {
+                        env.HAS_CHANGES = 'false'
+                        echo "⏭️  Empty commit detected — skipping Docker build and tag update."
+                    }
+                }
             }
         }
 
         stage('2. Build & Test') {
+            when { expression { return env.HAS_CHANGES == 'true' } }
             steps {
                 echo 'Running application tests...'
             }
         }
 
         stage('3. Build & Push Docker Image') {
+            when { expression { return env.HAS_CHANGES == 'true' } }
             steps {
                 echo "Building Docker Image: ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
                 sh "docker build --no-cache -t ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} ."
@@ -43,29 +62,32 @@ pipeline {
 
         stage('4. Update Image Tag in GitOps Config') {
             when {
-                branch 'main'
+                allOf {
+                    branch 'main'
+                    expression { return env.HAS_CHANGES == 'true' }
+                }
             }
             steps {
                 echo 'Updating image tag in Helm values.yaml in config repository...'
-                
+
                 // Clone the config repository, update values.yaml, and push back
                 withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: 'GH_USER', passwordVariable: 'GH_TOKEN')]) {
                     sh """
                         # Remove any existing config-repo folder
                         rm -rf config-repo
-                        
+
                         # Clone the config repo
                         git clone https://${GH_USER}:${GH_TOKEN}@${GITOPS_REPO} config-repo
-                        
+
                         cd config-repo
-                        
+
                         # Update the image tag in values.yaml
                         perl -i -pe 's/tag: .*/tag: "${IMAGE_TAG}"/g' hello-kubernetes/values.yaml
-                        
+
                         # Configure git client
                         git config user.email "jenkins@yourdomain.com"
                         git config user.name "Jenkins CI"
-                        
+
                         # Stage, commit and push changes back
                         git add hello-kubernetes/values.yaml
                         git commit -m "image update: bump hello-gitops-app tag to ${IMAGE_TAG} [skip ci]"
