@@ -79,7 +79,10 @@ pipeline {
         stage('4. Update Image Tags in GitOps Config') {
             when {
                 allOf {
-                    branch 'main'
+                    anyOf {
+                        branch 'main'
+                        branch 'release/*'
+                    }
                     expression { return env.HAS_CHANGES == 'true' }
                 }
             }
@@ -115,7 +118,10 @@ pipeline {
         stage('5. Trigger CD Pipeline') {
             when {
                 allOf {
-                    branch 'main'
+                    anyOf {
+                        branch 'main'
+                        branch 'release/*'
+                    }
                     expression { return env.HAS_CHANGES == 'true' }
                 }
             }
@@ -132,6 +138,38 @@ pipeline {
                         echo "⚠️  HTTP ${HTTP_CODE} — check Jenkins CD manually."
                     fi
                 '''
+            }
+        }
+
+        stage('6. Create GitHub Release Tag') {
+            when {
+                allOf {
+                    branch 'release/*'
+                    expression { return env.HAS_CHANGES == 'true' }
+                }
+            }
+            steps {
+                echo "🏷️ Creating GitHub release tag for branch ${env.BRANCH_NAME}..."
+                withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: 'GH_USER', passwordVariable: 'GH_TOKEN')]) {
+                    sh """
+                        # Format the tag name
+                        SAFE_BRANCH=\$(echo "${env.BRANCH_NAME}" | sed 's|release/||')
+                        GIT_TAG="release-\${SAFE_BRANCH}-${TAG}"
+                        
+                        echo "Applying tag: \${GIT_TAG}"
+                        
+                        git config user.email "jenkins@nigam.family"
+                        git config user.name "Jenkins CI"
+                        
+                        # Configure authenticated remote for push
+                        git remote set-url origin https://${GH_USER}:${GH_TOKEN}@github.com/dilip0007/helm-argocd-pipeline.git
+                        
+                        # Create and push tag
+                        git tag -a \${GIT_TAG} -m "Release tag for \${GIT_TAG}"
+                        git push origin \${GIT_TAG}
+                    """
+                }
+                echo "✅ Successfully pushed tag to GitHub."
             }
         }
 
